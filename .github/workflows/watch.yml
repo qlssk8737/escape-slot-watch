@@ -1,0 +1,18 @@
+name: watch
+on:
+  schedule:
+    # UTC 기준. 11/8 07:00 UTC가 한국 시간 16:00. ponytail: GitHub 최소 간격 5분, 실제로는 더 늦기도 함
+    - cron: "*/5 * 2-7 11 *"
+    - cron: "*/5 0-6 8 11 *"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 watch.py
+        env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
